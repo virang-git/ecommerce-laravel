@@ -22,4 +22,4 @@ Route::get('products', [AuthenticationController::class, 'getProducts'])->name('
 //cart api
 Route::post('add-to-cart', [CartController::class, 'addToCart']);
 Route::get('get-cart-product/{user_id}', [CartController::class, 'getCartProducts']);
-Route::get('remove-cart-product/{user_id}', [CartController::class, 'removeCartProduct']);
+Route::post('remove-cart-product', [CartController::class, 'deleteFromCart']);

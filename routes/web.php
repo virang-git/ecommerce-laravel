@@ -53,15 +53,15 @@ Route::get('/deletecategory/{id}', [CategoryController::class, 'destroy'])->name
 
 //manage order route
 Route::get('/manageorder', function () {
-    return view('manageorder');
+    return view('order.manageorder');
 });
 
 //all payments route
 Route::get('/allpayments', function () {
-    return view('allpayments');
+    return view('payment.allpayments');
 });
 
 //manage contact us route
 Route::get('/managecontactus', function () {
-    return view('managecontactus');
+    return view('contactus.managecontactus');
 });
