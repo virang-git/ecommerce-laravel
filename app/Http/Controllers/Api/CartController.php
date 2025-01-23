@@ -13,6 +13,7 @@ class  CartController extends Controller
     {
         $cartProduct = Cart::where('user_id', $request->user_id)
             ->where('product_id', $request->product_id)
+            ->where('status', 'not ordered')
             ->first();
 
         if ($cartProduct) {
@@ -39,12 +40,18 @@ class  CartController extends Controller
 
     public function getCartProducts($userId)
     {
-        $cartProducts = Cart::select('product_id')->where('user_id', $userId)->get()->toArray();
-        $products = Product::whereIn('product_id', $cartProducts)->get();
-        $total_quantity = Cart::select('total_quantity')->where('user_id', $userId)->get();
+        // $cartProducts = Cart::select('product_id')->where('user_id', $userId)->get()->toArray();
+        // $products = Product::whereIn('product_id', $cartProducts)->get();
+        // $total_quantity = Cart::select('cart_id', 'total_quantity')->where('user_id', $userId)->get();
+        $cartData = Cart::join('product', 'cart.product_id', '=', 'product.product_id')
+            ->select('product.*', 'cart.total_quantity', 'cart.cart_id')
+            ->where('cart.user_id', $userId)
+            ->where('status', 'not ordered')
+            ->get();
+
         return response()->json([
-            'products' => $products,
-            'total_quantity' => $total_quantity
+            'products' => $cartData,
+            //'total_quantity' => $total_quantity
         ], 201);
     }
 
@@ -66,5 +73,18 @@ class  CartController extends Controller
             'status' => 'error',
             'message' => 'Product not found in cart',
         ], 404);
+    }
+
+    public function updateCartProduct(Request $request)
+    {
+        $updateQuantity = Cart::where('cart_id', $request->cart_id)
+            ->where('product_id', $request->product_id)
+            ->update(['total_quantity' => $request->total_quantity]); // Correct format here
+
+        if ($updateQuantity) {
+            return response()->json(['status' => 'success', 'message' => 'Cart updated successfully']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Failed to update cart'], 500);
+        }
     }
 }

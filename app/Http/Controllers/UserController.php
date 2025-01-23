@@ -29,6 +29,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('showuser')->with('success', 'User Deleted Successfully');
+        return redirect()->route('manageuser')->with('success', 'User Deleted Successfully');
     }
 }

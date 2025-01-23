@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 
 class ContactUsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $contact = ContactUs::all();
+        return view(
+            'contactus.managecontactus',
+            [
+                'contact' => $contact
+            ]
+        );
     }
 
     /**
@@ -26,10 +33,7 @@ class ContactUsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function contactUs(Request $request) {}
 
     /**
      * Display the specified resource.
